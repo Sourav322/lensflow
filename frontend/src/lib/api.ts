@@ -1,53 +1,32 @@
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8080"
+const API_BASE = import.meta.env.VITE_API_URL
 
 export const api = {
-  async get(path: string) {
-    const res = await fetch(`${API_BASE}${path}`)
-    if (!res.ok) throw new Error("API error")
-    return res.json()
-  },
 
-  async post(path: string, data: any) {
-    const res = await fetch(`${API_BASE}${path}`, {
+  get: (url: string) =>
+    fetch(API_BASE + url).then(r => r.json()),
+
+  post: (url: string, data: any) =>
+    fetch(API_BASE + url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-    if (!res.ok) throw new Error("API error")
-    return res.json()
-  },
+      body: JSON.stringify(data)
+    }).then(r => r.json()),
 
-  async put(path: string, data: any) {
-    const res = await fetch(`${API_BASE}${path}`, {
+  put: (url: string, data: any) =>
+    fetch(API_BASE + url, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-    if (!res.ok) throw new Error("API error")
-    return res.json()
-  },
+      body: JSON.stringify(data)
+    }).then(r => r.json()),
 
-  async patch(path: string, data: any) {
-    const res = await fetch(`${API_BASE}${path}`, {
+  patch: (url: string, data: any) =>
+    fetch(API_BASE + url, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-    if (!res.ok) throw new Error("API error")
-    return res.json()
-  },
+      body: JSON.stringify(data)
+    }).then(r => r.json()),
 
-  async delete(path: string) {
-    const res = await fetch(`${API_BASE}${path}`, {
-      method: "DELETE",
-    })
-    if (!res.ok) throw new Error("API error")
-    return res.json()
-  },
+  delete: (url: string) =>
+    fetch(API_BASE + url, { method: "DELETE" }).then(r => r.json())
+
 }
-
-export const rupee = (value: number) =>
-  `₹${value.toLocaleString("en-IN")}`
-
-export const fmtDate = (date: string | Date) =>
-  new Date(date).toLocaleDateString("en-IN")
