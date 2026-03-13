@@ -30,3 +30,13 @@ export const api = {
     fetch(API_BASE + url, { method: "DELETE" }).then(r => r.json())
 
 }
+
+/* ---------- Utility functions ---------- */
+
+export const rupee = (amount: number | string) => {
+  return "₹" + Number(amount || 0).toLocaleString("en-IN")
+}
+
+export const fmtDate = (date: string | Date) => {
+  return new Date(date).toLocaleDateString("en-IN")
+}
