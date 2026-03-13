@@ -26,14 +26,26 @@ export default function Orders() {
   });
 
   const downloadPdf = async (invoiceId: string, invoiceNo: string) => {
-    try {
-      const res = await api.get(`/invoices/${invoiceId}/pdf`, { responseType: 'blob' });
-      const url = URL.createObjectURL(res.data);
-      const a = document.createElement('a'); a.href = url; a.download = `${invoiceNo}.pdf`; a.click();
-      URL.revokeObjectURL(url);
-      toast('PDF downloaded', 'success');
-    } catch { toast('PDF generation failed', 'error'); }
-  };
+  try {
+    const res = await fetch(
+      import.meta.env.VITE_API_URL + `/invoices/${invoiceId}/pdf`
+    );
+
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${invoiceNo}.pdf`;
+    a.click();
+
+    URL.revokeObjectURL(url);
+
+    toast('PDF downloaded', 'success');
+  } catch {
+    toast('PDF generation failed', 'error');
+  }
+};
 
   const getWhatsApp = async (invoiceId: string) => {
     try {
