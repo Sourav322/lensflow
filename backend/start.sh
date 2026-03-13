@@ -1,6 +1,16 @@
 #!/bin/bash
-echo "🔄 Running Prisma migrations..."
+
+echo "Installing dependencies..."
+npm install
+
+echo "Generating Prisma client..."
+npx prisma generate
+
+echo "Running Prisma migrations..."
 npx prisma migrate deploy --schema=./prisma/schema.prisma
 
-echo "🚀 Starting LensFlow API..."
+echo "Building TypeScript..."
+npm run build
+
+echo "Starting LensFlow API..."
 node dist/index.js
