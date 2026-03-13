@@ -1,17 +1,27 @@
-import express from "express";
-import { PrismaClient } from "@prisma/client";
+import express from "express"
+import cors from "cors"
+import dotenv from "dotenv"
 
-const app = express();
-const prisma = new PrismaClient();
+import { errorHandler } from "./middleware/errorHandler"
 
-app.use(express.json());
+dotenv.config()
 
-const PORT = process.env.PORT || 3000;
+const app = express()
+
+app.use(cors())
+app.use(express.json())
 
 app.get("/", (req, res) => {
-  res.send("LensFlow API running");
-});
+  res.json({
+    name: "LensFlow API",
+    status: "running"
+  })
+})
+
+app.use(errorHandler)
+
+const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+  console.log(`Server running on port ${PORT}`)
+})
