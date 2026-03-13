@@ -150,7 +150,7 @@ setUserForm(p=>({...p,[k]:e.target.value}))
 
 const doLogout = async () => {
 
-try{ await api.post('/auth/logout') }catch{}
+try { await api.post('/auth/logout', {}) } catch {}
 
 logout()
 
