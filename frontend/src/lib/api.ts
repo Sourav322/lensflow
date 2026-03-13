@@ -1,38 +1,40 @@
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8080"
 
-export async function api(path: string, options: RequestInit = {}) {
-  const res = await fetch(`${API_BASE}${path}`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-    ...options,
-  })
+export const api = {
+  async get(path: string) {
+    const res = await fetch(`${API_BASE}${path}`)
+    if (!res.ok) throw new Error("API error")
+    return res.json()
+  },
 
-  if (!res.ok) {
-    throw new Error("API Error")
-  }
+  async post(path: string, data: any) {
+    const res = await fetch(`${API_BASE}${path}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+    if (!res.ok) throw new Error("API error")
+    return res.json()
+  },
 
-  return res.json()
+  async put(path: string, data: any) {
+    const res = await fetch(`${API_BASE}${path}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+    if (!res.ok) throw new Error("API error")
+    return res.json()
+  },
+
+  async delete(path: string) {
+    const res = await fetch(`${API_BASE}${path}`, {
+      method: "DELETE",
+    })
+    if (!res.ok) throw new Error("API error")
+    return res.json()
+  },
 }
-
-export const get = (path: string) => api(path)
-
-export const post = (path: string, data: any) =>
-  api(path, {
-    method: "POST",
-    body: JSON.stringify(data),
-  })
-
-export const put = (path: string, data: any) =>
-  api(path, {
-    method: "PUT",
-    body: JSON.stringify(data),
-  })
-
-export const del = (path: string) =>
-  api(path, {
-    method: "DELETE",
-  })
 
 export const rupee = (value: number) =>
   `₹${value.toLocaleString("en-IN")}`
