@@ -1,1 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body, #root { height: 100%; }
+  body { font-family: 'DM Sans', sans-serif; color: #1a2332; background: #f4f6f9; font-size: 14px; -webkit-font-smoothing: antialiased; }
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-thumb { background: #c8d3de; border-radius: 99px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  input, select, textarea { font-family: inherit; }
+}
+
+@layer components {
+  /* ── Buttons ── */
+  .btn { @apply inline-flex items-center gap-1.5 px-4 py-2 rounded-[9px] border-none cursor-pointer text-[13px] font-semibold transition-all duration-150 whitespace-nowrap leading-none disabled:opacity-50 disabled:cursor-not-allowed select-none; }
+  .btn-teal   { @apply bg-teal text-white shadow-[0_2px_10px_rgba(0,169,157,.28)] hover:bg-teal-dark hover:-translate-y-px hover:shadow-[0_4px_16px_rgba(0,169,157,.4)] active:translate-y-0; }
+  .btn-outline { @apply bg-white text-ink border border-border-dark hover:border-teal hover:text-teal hover:bg-teal-light; }
+  .btn-ghost  { @apply bg-transparent text-ink-2 border border-border hover:bg-bg hover:border-border-dark; }
+  .btn-coral  { @apply bg-coral text-white hover:bg-[#e85d5d] hover:-translate-y-px; }
+  .btn-gold   { @apply bg-gold text-white hover:bg-gold-dark; }
+  .btn-sm  { @apply px-3 py-1.5 text-[12.5px] rounded-lg; }
+  .btn-xs  { @apply px-2.5 py-1 text-[11.5px] rounded-md; }
+  .btn-icon { @apply w-8 h-8 p-0 rounded-lg bg-bg border border-border hover:border-teal hover:text-teal hover:bg-teal-light justify-center; }
+
+  /* ── Cards ── */
+  .card { @apply bg-white border border-border rounded-2xl p-5 shadow-[0_1px_8px_rgba(0,0,0,.06)]; }
+  .card-hover { @apply transition-all duration-200 cursor-pointer hover:shadow-[0_4px_24px_rgba(0,0,0,.1)] hover:-translate-y-0.5 hover:border-teal-mid; }
+
+  /* ── Badges ── */
+  .badge { @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-[11.5px] font-semibold; }
+  .badge-teal   { @apply bg-teal-light text-teal-dark; }
+  .badge-coral  { @apply bg-coral-soft text-[#cc3333]; }
+  .badge-gold   { @apply bg-gold-soft text-[#b07800]; }
+  .badge-green  { @apply bg-[#e8faf4] text-[#00875a]; }
+  .badge-navy   { @apply bg-[#eef1f8] text-navy-dark; }
+  .badge-gray   { @apply bg-[#f2f5f8] text-ink-2; }
+  .badge-purple { @apply bg-[#f3f0ff] text-[#5b21b6]; }
+
+  /* ── Form fields ── */
+  .field { @apply mb-4; }
+  .label { @apply block text-[12px] font-bold text-ink tracking-[.2px] mb-1.5; }
+  .req   { @apply text-coral; }
+  .input { @apply w-full px-3 py-2.5 rounded-[9px] bg-white border border-border-dark text-ink text-[13.5px] outline-none transition-all placeholder:text-ink-4 focus:border-teal focus:shadow-[0_0_0_3px_rgba(0,169,157,.1)]; }
+  .input-sm { @apply px-2.5 py-2 text-[13px]; }
+  textarea.input { @apply resize-y min-h-[72px]; }
+
+  /* ── Table ── */
+  .tbl { @apply w-full border-collapse; }
+  .tbl th { @apply text-[11px] tracking-[.7px] uppercase text-ink-3 px-4 py-2.5 text-left border-b-2 border-border font-bold bg-[#fafbfd] whitespace-nowrap; }
+  .tbl td { @apply px-4 py-3 text-[13px] border-b border-border align-middle; }
+  .tbl tbody tr:last-child td { @apply border-b-0; }
+  .tbl tbody tr { @apply transition-colors hover:bg-[#f8fbfc]; }
+
+  /* ── Tabs ── */
+  .tab-bar { @apply flex border-b-2 border-border mb-5 overflow-x-auto; }
+  .tab-btn { @apply px-5 py-2.5 text-[13px] font-semibold text-ink-3 cursor-pointer border-none bg-transparent font-sans border-b-[2.5px] border-transparent -mb-0.5 transition-all whitespace-nowrap shrink-0 hover:text-ink; }
+  .tab-active { @apply text-teal !border-b-teal; }
+
+  /* ── Sidebar nav ── */
+  .nav-item { @apply flex items-center gap-2.5 px-2.5 py-[9px] rounded-[9px] mb-px cursor-pointer text-white/50 text-[13px] font-medium transition-all relative overflow-hidden select-none whitespace-nowrap hover:text-white/80 hover:bg-white/[.06]; }
+  .nav-active { @apply bg-teal/[.18] !text-white font-semibold; }
+  .nav-active::before { content: ''; @apply absolute left-0 top-1 bottom-1 w-[3px] bg-teal rounded-r-sm; }
+
+  /* ── Status pills ── */
+  .status-pending    { @apply badge badge-gold; }
+  .status-confirmed  { @apply badge badge-teal; }
+  .status-processing { @apply badge badge-navy; }
+  .status-ready      { @apply badge badge-purple; }
+  .status-delivered  { @apply badge badge-green; }
+  .status-cancelled  { @apply badge badge-coral; }
+  .status-received   { @apply badge badge-gold; }
+  .status-diagnosing { @apply badge badge-navy; }
+  .status-repairing  { @apply badge badge-purple; }
+  .status-sent_to_lab  { @apply badge badge-navy; }
+  .status-in_progress  { @apply badge badge-purple; }
+  .status-quality_check { @apply badge badge-gold; }
+}
+
+/* Animations */
+@keyframes fadeIn   { from { opacity: 0; }                          to { opacity: 1; } }
+@keyframes slideUp  { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes toastIn  { from { transform: translateX(110%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes spin     { to   { transform: rotate(360deg); } }
+
+.animate-fadeIn  { animation: fadeIn  .2s ease; }
+.animate-slideUp { animation: slideUp .22s ease; }
+.animate-toastIn { animation: toastIn .22s ease; }
+.animate-spin    { animation: spin    1s linear infinite; }
