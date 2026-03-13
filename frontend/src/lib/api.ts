@@ -27,6 +27,16 @@ export const api = {
     return res.json()
   },
 
+  async patch(path: string, data: any) {
+    const res = await fetch(`${API_BASE}${path}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+    if (!res.ok) throw new Error("API error")
+    return res.json()
+  },
+
   async delete(path: string) {
     const res = await fetch(`${API_BASE}${path}`, {
       method: "DELETE",
