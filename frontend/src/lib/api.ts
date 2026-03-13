@@ -31,7 +31,7 @@ export const api = {
 
 }
 
-/* ---------- Utility functions ---------- */
+/* ---------- Utilities ---------- */
 
 export const rupee = (amount: number | string) => {
   return "₹" + Number(amount || 0).toLocaleString("en-IN")
