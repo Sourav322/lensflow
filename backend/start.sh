@@ -3,7 +3,7 @@
 echo "Installing dependencies..."
 npm install
 
-echo "Generating Prisma client..."
+echo "Generating Prisma Client..."
 npx prisma generate
 
 echo "Running Prisma migrations..."
