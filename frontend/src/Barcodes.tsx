@@ -886,4 +886,3 @@ export default function Barcodes() {
     </div>
   );
 }
-
