@@ -1,47 +1,32 @@
-'use strict';
-require('dotenv').config();
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import rateLimit from 'express-rate-limit';
 
-const express       = require('express');
-const cors          = require('cors');
-const helmet        = require('helmet');
-const morgan        = require('morgan');
-const rateLimit     = require('express-rate-limit');
-
-const { authRouter }          = require('./routes/auth');
-const { shopRouter }          = require('./routes/shop');
-const { customersRouter }     = require('./routes/customers');
-const { framesRouter }        = require('./routes/frames');
-const { lensesRouter }        = require('./routes/lenses');
-const { accessoriesRouter }   = require('./routes/accessories');
-const { ordersRouter }        = require('./routes/orders');
-const { labOrdersRouter }     = require('./routes/labOrders');
-const { repairsRouter }       = require('./routes/repairs');
-const { prescriptionsRouter } = require('./routes/prescriptions');
-const { staffRouter }         = require('./routes/staff');
-const { invoicesRouter }      = require('./routes/invoices');
-const { reportsRouter }       = require('./routes/reports');
-const { errorHandler }        = require('./middleware/errorHandler');
+import { authRouter }          from './routes/auth';
+import { shopRouter }          from './routes/shop';
+import { customersRouter }     from './routes/customers';
+import { framesRouter }        from './routes/frames';
+import { lensesRouter }        from './routes/lenses';
+import { accessoriesRouter }   from './routes/accessories';
+import { ordersRouter }        from './routes/orders';
+import { labOrdersRouter }     from './routes/labOrders';
+import { repairsRouter }       from './routes/repairs';
+import { prescriptionsRouter } from './routes/prescriptions';
+import { staffRouter }         from './routes/staff';
+import { invoicesRouter }      from './routes/invoices';
+import { reportsRouter }       from './routes/reports';
+import { errorHandler }        from './middleware/errorHandler';
 
 const app  = express();
 const PORT = parseInt(process.env.PORT || '4000', 10);
 
 app.set('trust proxy', 1);
 app.use(helmet());
-
-const ALLOWED_ORIGINS = [
-  process.env.FRONTEND_URL,
-  'http://localhost:5173',
-  'http://localhost:3000',
-].filter(Boolean);
-
 app.use(cors({
-  origin: function(origin, cb) {
-    if (!origin) return cb(null, true);
-    if (ALLOWED_ORIGINS.includes(origin)) return cb(null, true);
-    if (/https:\/\/lensflow.*\.vercel\.app$/.test(origin)) return cb(null, true);
-    if (/\.vercel\.app$/.test(origin)) return cb(null, true);
-    return cb(null, true); // Allow all for now
-  },
+  origin: (_origin: any, cb: any) => cb(null, true),
   credentials: true,
 }));
 
@@ -53,8 +38,8 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('combined'));
 
-app.get('/health',     function(req, res) { res.json({ status: 'ok' }); });
-app.get('/api/health', function(req, res) { res.json({ status: 'ok', version: '1.0.0' }); });
+app.get('/health',     (_req: any, res: any) => res.json({ status: 'ok' }));
+app.get('/api/health', (_req: any, res: any) => res.json({ status: 'ok', version: '1.0.0' }));
 
 app.use('/api/auth',          authLimiter, authRouter);
 app.use('/api/shop',          shopRouter);
@@ -70,14 +55,14 @@ app.use('/api/staff',         staffRouter);
 app.use('/api/invoices',      invoicesRouter);
 app.use('/api/reports',       reportsRouter);
 
-app.use(function(req, res) {
+app.use((_req: any, res: any) => {
   res.status(404).json({ success: false, error: 'Route not found' });
 });
 
 app.use(errorHandler);
 
-app.listen(PORT, '0.0.0.0', function() {
-  console.log('LensFlow API running on port ' + PORT);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`LensFlow API running on port ${PORT}`);
 });
 
-module.exports = app;
+export default app;
