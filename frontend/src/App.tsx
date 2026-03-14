@@ -2,7 +2,6 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from './store/authStore';
 import AppShell      from './components/layout/AppShell';
 import ToastStack    from './components/ui/Toast';
-
 import Login         from './pages/Login';
 import Setup         from './pages/Setup';
 import Dashboard     from './pages/Dashboard';
@@ -32,10 +31,7 @@ export default function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/setup" element={<Setup />} />
-        <Route
-          path="/"
-          element={<Guard><AppShell /></Guard>}
-        >
+        <Route path="/" element={<Guard><AppShell /></Guard>}>
           <Route index              element={<Dashboard />} />
           <Route path="pos"         element={<POS />} />
           <Route path="customers"   element={<Customers />} />
