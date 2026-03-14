@@ -1,12 +1,12 @@
 {
   "name": "lensflow-backend",
   "version": "1.0.0",
-  "main": "dist/index.js",
+  "main": "src/index.ts",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "npx prisma generate --schema=./prisma/schema.prisma && tsc --noEmitOnError false",
-    "start": "node dist/index.js",
-    "postinstall": "prisma generate --schema=./prisma/schema.prisma"
+    "build": "npx prisma generate --schema=./prisma/schema.prisma",
+    "start": "node --loader tsx src/index.ts",
+    "postinstall": "npx prisma generate --schema=./prisma/schema.prisma"
   },
   "dependencies": {
     "@prisma/client": "^5.10.2",
@@ -20,7 +20,8 @@
     "morgan": "^1.10.0",
     "pdfkit": "^0.15.0",
     "winston": "^3.13.0",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "tsx": "^4.7.1"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
@@ -31,7 +32,6 @@
     "@types/node": "^20.11.28",
     "@types/pdfkit": "^0.13.4",
     "prisma": "^5.10.2",
-    "tsx": "^4.7.1",
     "typescript": "^5.4.2"
   }
 }
