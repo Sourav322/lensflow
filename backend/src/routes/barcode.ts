@@ -9,14 +9,10 @@ router.get("/:code", async (req, res) => {
     const product = await prisma.product.findUnique({
       where: { sku: code }
     });
-
-    if (!product) {
-      return res.status(404).json({ success: false, message: "Product not found" });
-    }
-
-    res.json({ ...product, type: product.category });
+    if (!product) return res.status(404).json({ success: false, message: "Product not found" });
+    res.json(product);
   } catch (error) {
-    res.status(500).json({ success: false, message: "Internal server error" });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 });
 
