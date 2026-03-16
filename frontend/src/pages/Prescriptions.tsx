@@ -42,7 +42,7 @@ export default function Prescriptions() {
 
   const { data: customers = [] } = useQuery({
     queryKey: ['customers-rx'],
-    queryFn: () => api.get('/customers?limit=500').then(r => r.data.data),
+    queryFn: () => api.get('/customers?limit=500').then(r => r.data),
   });
 
   const save = useMutation({

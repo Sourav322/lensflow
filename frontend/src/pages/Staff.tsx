@@ -20,7 +20,7 @@ export default function Staff() {
 
   const { data = [], isLoading } = useQuery({
     queryKey: ['staff'],
-    queryFn: () => api.get('/staff').then(r => r.data.data),
+    queryFn: () => api.get('/staff').then(r => r.data),
   });
 
   const save = useMutation({

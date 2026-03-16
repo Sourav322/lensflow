@@ -26,7 +26,7 @@ export default function LabOrders() {
 
   const { data: lenses = [] } = useQuery({
     queryKey: ['lenses-lab'],
-    queryFn: () => api.get('/lenses?limit=200').then(r => r.data.data),
+    queryFn: () => api.get('/lenses?limit=200').then(r => r.data),
   });
 
   const save = useMutation({

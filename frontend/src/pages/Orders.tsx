@@ -21,7 +21,7 @@ export default function Orders() {
 
   const { data: detail } = useQuery({
     queryKey: ['order', viewId],
-    queryFn: () => api.get(`/orders/${viewId}`).then(r => r.data.data),
+    queryFn: () => api.get(`/orders/${viewId}`).then(r => r.data),
     enabled: !!viewId,
   });
 

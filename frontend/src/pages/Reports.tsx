@@ -18,9 +18,9 @@ export default function Reports() {
   const [to, setTo]     = useState('');
   const [page, setPage] = useState(1);
 
-  const { data: dash } = useQuery({ queryKey: ['dashboard'], queryFn: () => api.get('/reports/dashboard').then(r => r.data.data) });
-  const { data: inv  } = useQuery({ queryKey: ['inv-report'],  queryFn: () => api.get('/reports/inventory').then(r => r.data.data),  enabled: tab === 'Inventory' });
-  const { data: cust } = useQuery({ queryKey: ['cust-report'], queryFn: () => api.get('/reports/customers').then(r => r.data.data),  enabled: tab === 'Customers' });
+  const { data: dash } = useQuery({ queryKey: ['dashboard'], queryFn: () => api.get('/reports/dashboard').then(r => r.data) });
+  const { data: inv  } = useQuery({ queryKey: ['inv-report'],  queryFn: () => api.get('/reports/inventory').then(r => r.data),  enabled: tab === 'Inventory' });
+  const { data: cust } = useQuery({ queryKey: ['cust-report'], queryFn: () => api.get('/reports/customers').then(r => r.data),  enabled: tab === 'Customers' });
   const { data: sales, isLoading: salesLoading } = useQuery({
     queryKey: ['sales-report', from, to, page],
     queryFn: () => api.get(`/reports/sales?from=${from}&to=${to}&page=${page}&limit=20`).then(r => r.data),

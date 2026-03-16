@@ -28,7 +28,7 @@ export default function Customers() {
 
   const { data: detail } = useQuery({
     queryKey: ['customer', viewId],
-    queryFn: () => api.get(`/customers/${viewId}`).then(r => r.data.data),
+    queryFn: () => api.get(`/customers/${viewId}`).then(r => r.data),
     enabled: !!viewId,
   });
 

@@ -27,7 +27,7 @@ export default function Repairs() {
 
   const { data: customers = [] } = useQuery({
     queryKey: ['customers-repairs'],
-    queryFn: () => api.get('/customers?limit=500').then(r => r.data.data),
+    queryFn: () => api.get('/customers?limit=500').then(r => r.data),
   });
 
   const save = useMutation({

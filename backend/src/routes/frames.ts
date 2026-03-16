@@ -8,9 +8,37 @@ router.get("/", async (req, res) => {
     const frames = await prisma.product.findMany({
       where: { category: 'FRAME' }
     });
-    res.json(frames);
+    res.json({ success: true, data: frames });
   } catch (error) {
-    res.status(500).json({ error: "Frames load nahi ho paye" });
+    res.status(500).json({ success: false, message: "Failed to load frames" });
+  }
+});
+
+router.get("/barcode/:code", async (req, res) => {
+  try {
+    const frame = await prisma.product.findFirst({
+      where: { category: 'FRAME', sku: req.params.code }
+    });
+    if (!frame) {
+      return res.status(404).json({ success: false, message: "Frame not found" });
+    }
+    res.json({ success: true, data: frame });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Failed to lookup barcode" });
+  }
+});
+
+router.get("/:id", async (req, res) => {
+  try {
+    const frame = await prisma.product.findFirst({
+      where: { id: parseInt(req.params.id), category: 'FRAME' }
+    });
+    if (!frame) {
+      return res.status(404).json({ success: false, message: "Frame not found" });
+    }
+    res.json({ success: true, data: frame });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Failed to load frame" });
   }
 });
 
@@ -19,9 +47,21 @@ router.post("/", async (req, res) => {
     const frame = await prisma.product.create({
       data: { ...req.body, category: 'FRAME' }
     });
-    res.json(frame);
+    res.json({ success: true, data: frame });
   } catch (error) {
-    res.status(500).json({ error: "Frame save nahi hua" });
+    res.status(500).json({ success: false, message: "Failed to create frame" });
+  }
+});
+
+router.put("/:id", async (req, res) => {
+  try {
+    const frame = await prisma.product.update({
+      where: { id: parseInt(req.params.id) },
+      data: req.body
+    });
+    res.json({ success: true, data: frame });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Failed to update frame" });
   }
 });
 
