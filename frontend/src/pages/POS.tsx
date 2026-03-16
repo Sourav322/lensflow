@@ -28,15 +28,15 @@ export default function POS() {
   const [paying, setPaying]     = useState(false);
   const dropRef = useRef<HTMLDivElement>(null);
 
-  const { data: frames = [],   isLoading: fl } = useQuery({ queryKey:['frames-pos'],    queryFn: () => api.get('/frames?limit=200').then(r=>r.data.data) });
-  const { data: lenses = [],   isLoading: ll } = useQuery({ queryKey:['lenses-pos'],    queryFn: () => api.get('/lenses?limit=200').then(r=>r.data.data) });
-  const { data: accs   = [],   isLoading: al } = useQuery({ queryKey:['accs-pos'],      queryFn: () => api.get('/accessories').then(r=>r.data.data) });
-  const { data: customers = [] }               = useQuery({ queryKey:['customers-pos'], queryFn: () => api.get('/customers?limit=200').then(r=>r.data.data) });
+  const { data: frames = [],   isLoading: fl } = useQuery({ queryKey:['frames-pos'],    queryFn: () => api.get('/frames?limit=200').then(r=>r.data) });
+  const { data: lenses = [],   isLoading: ll } = useQuery({ queryKey:['lenses-pos'],    queryFn: () => api.get('/lenses?limit=200').then(r=>r.data) });
+  const { data: accs   = [],   isLoading: al } = useQuery({ queryKey:['accs-pos'],      queryFn: () => api.get('/accessories').then(r=>r.data) });
+  const { data: customers = [] }               = useQuery({ queryKey:['customers-pos'], queryFn: () => api.get('/customers?limit=200').then(r=>r.data) });
 
   const createOrder = useMutation({
     mutationFn: (body: any) => api.post('/orders', body),
     onSuccess: (res) => {
-      toast(`Invoice ${res.data.data.invoice.invoiceNumber} created! 🎉`, 'success');
+      toast(`Invoice ${res.data.invoice.invoiceNumber} created! 🎉`, 'success');
       setCart([]); setCust(null); setDiscVal(''); setTaxPct(''); setTend(''); setPaying(false);
       qc.invalidateQueries({ queryKey:['frames-pos'] });
       qc.invalidateQueries({ queryKey:['dashboard'] });

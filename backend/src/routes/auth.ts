@@ -5,17 +5,21 @@ import { generateToken } from "../utils/auth"
 const router = Router()
 
 router.post("/login", async (req, res) => {
-  const { email, password } = req.body
+  try {
+    const { email, password } = req.body
 
-  const user = await prisma.user.findUnique({ where: { email } })
+    const user = await prisma.user.findUnique({ where: { email } })
 
-  if (!user || user.password !== password) {
-    return res.status(401).json({ message: "Invalid credentials" })
+    if (!user || user.password !== password) {
+      return res.status(401).json({ success: false, message: "Invalid credentials" })
+    }
+
+    const token = generateToken(user.id, user.shopId, user.role)
+
+    res.json({ success: true, data: { token, user } })
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Login failed" })
   }
-
-  const token = generateToken(user.id)
-
-  res.json({ token, user })
 })
 
 export default router

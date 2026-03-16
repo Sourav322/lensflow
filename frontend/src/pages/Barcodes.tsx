@@ -249,9 +249,9 @@ export default function Barcodes() {
   const [editModal, setEditModal] = useState<{ product: ProductItem; code: string } | null>(null);
 
   // ─── Queries ────────────────────────────────────────────────────────────────
-  const { data: framesData }  = useQuery({ queryKey:['frames-bc'],  queryFn:()=>api.get('/frames?limit=500').then(r=>r.data.data)      });
-  const { data: lensesData }  = useQuery({ queryKey:['lenses-bc'],  queryFn:()=>api.get('/lenses?limit=500').then(r=>r.data.data)      });
-  const { data: accsData }    = useQuery({ queryKey:['accs-bc'],    queryFn:()=>api.get('/accessories').then(r=>r.data.data)           });
+  const { data: framesData }  = useQuery({ queryKey:['frames-bc'],  queryFn:()=>api.get('/frames?limit=500').then(r=>r.data)      });
+  const { data: lensesData }  = useQuery({ queryKey:['lenses-bc'],  queryFn:()=>api.get('/lenses?limit=500').then(r=>r.data)      });
+  const { data: accsData }    = useQuery({ queryKey:['accs-bc'],    queryFn:()=>api.get('/accessories').then(r=>r.data)           });
 
   const allProducts: ProductItem[] = [
     ...(framesData  ?? []).map((f:any) => ({ id:f.id, barcode:f.barcode||'', brand:f.brand, model:f.model, type:'frame'     as const, sellPrice:f.sellPrice, color:f.color     })),
@@ -373,7 +373,7 @@ export default function Barcodes() {
       ]);
       const found = res.find(r => r.status === 'fulfilled' && (r as any).value?.data?.data);
       if (found && (found as any).value?.data?.data) {
-        const d = (found as any).value.data.data;
+        const d = (found as any).value.data;
         const type: ProductItem['type'] = d.model ? 'frame' : d.category ? 'accessory' : 'lens';
         setScanResult({ id:d.id, barcode:d.barcode||code, brand:d.brand, model:d.model, name:d.name, type, sellPrice:d.sellPrice, color:d.color, coating:d.coating, category:d.category });
         toast(`Found: ${d.brand||d.name} ${d.model||''}`, 'success');

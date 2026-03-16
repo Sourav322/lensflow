@@ -14,7 +14,7 @@ export default function Dashboard() {
 
   const { data, isLoading } = useQuery({
     queryKey: ['dashboard'],
-    queryFn: () => api.get('/reports/dashboard').then(r => r.data.data),
+    queryFn: () => api.get('/reports/dashboard').then(r => r.data),
   });
 
   if (isLoading) return <PageSpinner />;
