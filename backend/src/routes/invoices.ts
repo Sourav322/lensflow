@@ -1,15 +1,17 @@
-import { Router } from "express"
-import { prisma } from "../lib/prisma"
+import { Router } from "express";
+import { prisma } from "../lib/prisma";
 
-const router = Router()
+const router = Router();
 
-router.get("/", async (_, res) => {
-  res.json(await prisma.invoice.findMany())
-})
+router.get("/", async (req, res) => {
+  try {
+    const invoices = await prisma.order.findMany({
+      include: { customer: true, orderItems: true }
+    });
+    res.json(invoices);
+  } catch (error) {
+    res.status(500).json({ error: "Invoices nahi mil rahi hain" });
+  }
+});
 
-router.post("/", async (req, res) => {
-  const invoice = await prisma.invoice.create({ data: req.body })
-  res.json(invoice)
-})
-
-export default router
+export default router;
