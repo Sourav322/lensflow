@@ -1,15 +1,15 @@
-import { Router } from "express"
-import { prisma } from "../lib/prisma"
+// src/routes/frames.ts
+router.get("/", async (req, res) => {
+  const frames = await prisma.product.findMany({
+    where: { category: 'FRAME' }
+  });
+  res.json(frames);
+});
 
-const router = Router()
-
-router.get("/", async (_, res) => {
-  res.json(await prisma.frame.findMany())
-})
-
-router.post("/", async (req, res) => {
-  const frame = await prisma.frame.create({ data: req.body })
-  res.json(frame)
-})
-
-export default router
+// src/routes/lenses.ts (Same logic)
+router.get("/", async (req, res) => {
+  const lenses = await prisma.product.findMany({
+    where: { category: 'LENS' }
+  });
+  res.json(lenses);
+});
