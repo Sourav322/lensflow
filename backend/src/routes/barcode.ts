@@ -7,7 +7,7 @@ router.get("/:code", async (req, res) => {
   const { code } = req.params;
   try {
     const product = await prisma.product.findFirst({
-      where: { barcode: code }
+      where: { sku: code }
     });
     if (!product) {
       return res.status(404).json({ success: false, message: "Product not found" });

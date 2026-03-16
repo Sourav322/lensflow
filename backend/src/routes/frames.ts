@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
 router.get("/barcode/:code", async (req, res) => {
   try {
     const frame = await prisma.product.findFirst({
-      where: { category: 'FRAME', barcode: req.params.code }
+      where: { category: 'FRAME', sku: req.params.code }
     });
     if (!frame) {
       return res.status(404).json({ success: false, message: "Frame not found" });
@@ -30,8 +30,8 @@ router.get("/barcode/:code", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const frame = await prisma.product.findUnique({
-      where: { id: req.params.id, category: 'FRAME' }
+    const frame = await prisma.product.findFirst({
+      where: { id: parseInt(req.params.id), category: 'FRAME' }
     });
     if (!frame) {
       return res.status(404).json({ success: false, message: "Frame not found" });
@@ -56,7 +56,7 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     const frame = await prisma.product.update({
-      where: { id: req.params.id },
+      where: { id: parseInt(req.params.id) },
       data: req.body
     });
     res.json({ success: true, data: frame });

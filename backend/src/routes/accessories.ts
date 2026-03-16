@@ -5,7 +5,9 @@ const router = Router()
 
 router.get("/", async (_, res) => {
   try {
-    const accessories = await prisma.accessory.findMany()
+    const accessories = await prisma.product.findMany({
+      where: { category: 'ACCESSORY' }
+    })
     res.json({ success: true, data: accessories })
   } catch (error) {
     res.status(500).json({ success: false, message: "Failed to load accessories" })
@@ -14,8 +16,8 @@ router.get("/", async (_, res) => {
 
 router.get("/barcode/:code", async (req, res) => {
   try {
-    const accessory = await prisma.accessory.findFirst({
-      where: { barcode: req.params.code }
+    const accessory = await prisma.product.findFirst({
+      where: { category: 'ACCESSORY', sku: req.params.code }
     })
     if (!accessory) {
       return res.status(404).json({ success: false, message: "Accessory not found" })
@@ -28,7 +30,9 @@ router.get("/barcode/:code", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const accessory = await prisma.accessory.findUnique({ where: { id: req.params.id } })
+    const accessory = await prisma.product.findFirst({
+      where: { id: parseInt(req.params.id), category: 'ACCESSORY' }
+    })
     if (!accessory) {
       return res.status(404).json({ success: false, message: "Accessory not found" })
     }
@@ -40,7 +44,9 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const item = await prisma.accessory.create({ data: req.body })
+    const item = await prisma.product.create({
+      data: { ...req.body, category: 'ACCESSORY' }
+    })
     res.json({ success: true, data: item })
   } catch (error) {
     res.status(500).json({ success: false, message: "Failed to create accessory" })
@@ -49,8 +55,8 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   try {
-    const item = await prisma.accessory.update({
-      where: { id: req.params.id },
+    const item = await prisma.product.update({
+      where: { id: parseInt(req.params.id) },
       data: req.body
     })
     res.json({ success: true, data: item })

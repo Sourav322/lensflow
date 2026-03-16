@@ -14,7 +14,9 @@ router.get("/", async (_, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const customer = await prisma.customer.findUnique({ where: { id: req.params.id } })
+    const customer = await prisma.customer.findUnique({ 
+      where: { id: parseInt(req.params.id) }
+    })
     if (!customer) {
       return res.status(404).json({ success: false, message: "Customer not found" })
     }
@@ -36,7 +38,7 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     const customer = await prisma.customer.update({
-      where: { id: req.params.id },
+      where: { id: parseInt(req.params.id) },
       data: req.body
     })
     res.json({ success: true, data: customer })
