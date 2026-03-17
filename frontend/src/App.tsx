@@ -10,7 +10,7 @@ import Customers     from './pages/Customers';
 import Prescriptions from './pages/Prescriptions';
 import Frames        from './pages/Frames';
 import Lenses        from './pages/Lenses';
-import Barcodes      from './pages/Barcodes';
+import Barcodes      from './Barcodes';
 import Orders        from './pages/Orders';
 import LabOrders     from './pages/LabOrders';
 import Repairs       from './pages/Repairs';
