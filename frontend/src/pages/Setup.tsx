@@ -48,7 +48,7 @@ export default function Setup() {
   const submit = async () => {
     setBusy(true); setError('');
     try {
-      const { data } = await api.post('/auth/register', {
+      const response = await api.post('/auth/register', {
         shopName: form.shopName,
         city:     form.city,
         phone:    form.phone,
@@ -56,16 +56,20 @@ export default function Setup() {
         email:    form.email,
         password: form.password,
       });
-      // Update shop details
+      const { user, accessToken, refreshToken } = response.data;
+
+      // Update shop details if provided
       if (form.address || form.state || form.gstin) {
-        const tokens = data.data;
+        localStorage.setItem('authToken', accessToken);
         await api.put('/shop', {
           address: form.address,
           state:   form.state,
           gstin:   form.gstin,
-        }, { headers: { Authorization: `Bearer ${tokens.accessToken}` } });
+        });
+        localStorage.removeItem('authToken');
       }
-      setAuth(data.data.user, data.data.accessToken, data.data.refreshToken);
+
+      setAuth(user, accessToken, refreshToken);
       setStep(2);
       setTimeout(() => navigate('/', { replace: true }), 2500);
     } catch (e: any) {
@@ -240,4 +244,3 @@ export default function Setup() {
     </div>
   );
 }
-

@@ -7,12 +7,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Shop {
+  id        Int      @id @default(autoincrement())
+  name      String
+  address   String?
+  city      String
+  state     String?
+  phone     String?
+  gstin     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  users     User[]
+}
+
 model User {
   id        Int      @id @default(autoincrement())
   name      String
   email     String   @unique
   password  String
   role      Role     @default(STAFF)
+  shopId    Int
+  shop      Shop     @relation(fields: [shopId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -20,6 +35,7 @@ model User {
 enum Role {
   ADMIN
   STAFF
+  OPTOMETRIST
 }
 
 model Customer {
