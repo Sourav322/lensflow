@@ -20,13 +20,22 @@ export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       user: null, accessToken: null, refreshToken: null,
-      setAuth: (user, accessToken, refreshToken) => set({ user, accessToken, refreshToken }),
-      setAccessToken: (accessToken) => set({ accessToken }),
-      logout: () => set({ user: null, accessToken: null, refreshToken: null }),
+      setAuth: (user, accessToken, refreshToken) => {
+        localStorage.setItem('authToken', accessToken);
+        set({ user, accessToken, refreshToken });
+      },
+      setAccessToken: (accessToken) => {
+        localStorage.setItem('authToken', accessToken);
+        set({ accessToken });
+      },
+      logout: () => {
+        localStorage.removeItem('authToken');
+        set({ user: null, accessToken: null, refreshToken: null });
+      },
     }),
     {
       name: 'lensflow-auth',
-      partialize: (s) => ({ user: s.user, refreshToken: s.refreshToken }),
+      partialize: (s) => ({ user: s.user, accessToken: s.accessToken, refreshToken: s.refreshToken }),
     }
   )
 );

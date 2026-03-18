@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '../lib/api';
-import { useToast } from '../hooks/useToast';
-import Modal from '../components/ui/Modal';
-import { PageSpinner } from '../components/ui/Spinner';
-import EmptyState from '../components/ui/EmptyState';
+import { api } from './lib/api';
+import { useToast } from './hooks/useToast';
+import Modal from './components/ui/Modal';
+import { PageSpinner } from './components/ui/Spinner';
+import EmptyState from './components/ui/EmptyState';
 import {
   Printer, Download, Camera, Upload, Plus,
   Search, Barcode, Shuffle, X, CheckCircle,

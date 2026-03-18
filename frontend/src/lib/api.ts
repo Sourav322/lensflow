@@ -1,33 +1,48 @@
-const API_BASE = import.meta.env.VITE_API_URL
+const API_BASE = import.meta.env.VITE_API_URL || '/api'
+
+const getAuthHeaders = () => {
+  const token = localStorage.getItem('authToken');
+  return token ? { Authorization: `Bearer ${token}` } : {};
+};
 
 export const api = {
 
-  get: (url: string) =>
-    fetch(API_BASE + url).then(r => r.json()),
+  get: (url: string, options?: RequestInit) =>
+    fetch(API_BASE + url, {
+      ...options,
+      headers: { ...getAuthHeaders(), ...options?.headers }
+    }).then(r => r.json()),
 
-  post: (url: string, data: any) =>
+  post: (url: string, data: any, options?: RequestInit) =>
     fetch(API_BASE + url, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
+      headers: { "Content-Type": "application/json", ...getAuthHeaders(), ...options?.headers },
+      body: JSON.stringify(data),
+      ...options
     }).then(r => r.json()),
 
-  put: (url: string, data: any) =>
+  put: (url: string, data: any, options?: RequestInit) =>
     fetch(API_BASE + url, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
+      headers: { "Content-Type": "application/json", ...getAuthHeaders(), ...options?.headers },
+      body: JSON.stringify(data),
+      ...options
     }).then(r => r.json()),
 
-  patch: (url: string, data: any) =>
+  patch: (url: string, data: any, options?: RequestInit) =>
     fetch(API_BASE + url, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
+      headers: { "Content-Type": "application/json", ...getAuthHeaders(), ...options?.headers },
+      body: JSON.stringify(data),
+      ...options
     }).then(r => r.json()),
 
-  delete: (url: string) =>
-    fetch(API_BASE + url, { method: "DELETE" }).then(r => r.json())
+  delete: (url: string, options?: RequestInit) =>
+    fetch(API_BASE + url, {
+      method: "DELETE",
+      headers: { ...getAuthHeaders(), ...options?.headers },
+      ...options
+    }).then(r => r.json())
 
 }
 
