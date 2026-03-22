@@ -1,47 +1,18 @@
-import { Router, Request, Response } from "express";
-import { prisma } from "../lib/prisma";
-import { generateToken, comparePassword } from "../utils/auth";
+// backend/src/middleware/auth.ts
 
-const router = Router();
+import { Request, Response, NextFunction } from 'express';
 
-router.post("/login", async (req: Request, res: Response) => {
-  try {
-    const { email, password } = req.body;
+export const authenticate = (req: any, res: Response, next: NextFunction) => {
+  // TEMP user (replace later with JWT logic)
+  req.user = { shopId: 1, role: 'admin' };
+  next();
+};
 
-    // 🔍 Validate input
-    if (!email || !password) {
-      return res.status(400).json({ message: "Email and password required" });
+export const authorize = (role: string) => {
+  return (req: any, res: Response, next: NextFunction) => {
+    if (!req.user || req.user.role !== role) {
+      return res.status(403).json({ message: 'Forbidden' });
     }
-
-    // 🔍 Find user
-    const user = await prisma.user.findUnique({
-      where: { email },
-    });
-
-    if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
-
-    // 🔐 Secure password check
-    const isMatch = await comparePassword(password, user.password);
-
-    if (!isMatch) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
-
-    // 🔑 Generate token
-    const token = generateToken(user.id);
-
-    res.json({
-      success: true,
-      token,
-      user,
-    });
-
-  } catch (error) {
-    console.error("LOGIN ERROR:", error);
-    res.status(500).json({ message: "Server error" });
-  }
-});
-
-export default router;
+    next();
+  };
+};
